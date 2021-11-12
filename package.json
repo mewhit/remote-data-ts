@@ -5,14 +5,22 @@
   "repository": "https://github.com/mewhit/remote-data-ts.git",
   "author": "Mike Whittom <mikewhittom27@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint": "^8.0.1",
     "jest": "^27.3.1",
     "prettier": "^2.3.2",
     "source-map-support": "^0.5.20",

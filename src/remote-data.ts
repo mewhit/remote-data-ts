@@ -50,7 +50,7 @@ type Loading = { _tag: "Loading" };
  * @example map(item => +item)(success("10")) === success(10)
  */
 export const map =
-  <A, R>(whenSucceed: (A) => R) =>
+  <A, R>(whenSucceed: (a: A) => R) =>
   (rd: RemoteData<A, unknown>) => {
     if (isSuccess(rd)) return success(whenSucceed(rd.value));
     return rd;
@@ -68,10 +68,10 @@ export const map =
  * @example map2((item1, item2) => item1 + item2)(notAsked())(loading()) === notAsked()
  */
 export const map2 =
-  <A, B, R>(whenSucceed: (A, B) => R) =>
+  <A, B, R>(whenSucceed: (a: A) => (b: B) => R) =>
   (rd: RemoteData<A, unknown>) =>
   (rd2: RemoteData<B, unknown>) => {
-    if (isSuccess(rd) && isSuccess(rd2)) return success(whenSucceed(rd.value, rd2.value));
+    if (isSuccess(rd) && isSuccess(rd2)) return success(whenSucceed(rd.value)(rd2.value));
     if (isNotAsked(rd) || isLoading(rd) || isFailure(rd)) return rd;
     return rd2;
   };
@@ -88,15 +88,6 @@ export const withDefault =
   <A>(defaultValue: A) =>
   (rd: RemoteData<A, unknown>) =>
     isSuccess(rd) ? rd.value : defaultValue;
-
-const foldw =
-  <A, E, R>(whenNotAsked: () => R, whenLoading: () => R, whenSuccess: (a: A) => R, whenFailure: (e: E) => R) =>
-  (rd: RemoteData<A, E>) => {
-    if (isNotAsked(rd)) return whenNotAsked();
-    if (isLoading(rd)) return whenLoading();
-    if (isSuccess(rd)) return whenSuccess(rd.value);
-    if (isFailure(rd)) return whenFailure(rd.value);
-  };
 
 /** Extract data for each state.
  * @param whenNotAsked Function when is state is NotAsked.
@@ -132,12 +123,14 @@ const foldw =
           )(failure(anyError)) === <p> Something bad happen! Call the 911 </p> 
 
  */
-export const fold: <A, E, R>(
-  whenNotAsked: () => R,
-  whenLoading: () => R,
-  whenSuccess: (a: A) => R,
-  whenFailure: (e: E) => R
-) => (rd: RemoteData<A, E>) => R = foldw;
+export const fold =
+  <A, E, R>(whenNotAsked: () => R, whenLoading: () => R, whenSuccess: (a: A) => R, whenFailure: (e: E) => R) =>
+  (rd: RemoteData<A, E>) => {
+    if (isNotAsked(rd)) return whenNotAsked();
+    if (isLoading(rd)) return whenLoading();
+    if (isFailure(rd)) return whenFailure(rd.value);
+    return whenSuccess(rd.value);
+  };
 
 const _isSuccess = <A>(ma: RemoteData<A, unknown>): ma is Success<A> => ma._tag === "Success";
 
