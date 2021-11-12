@@ -1,12 +1,14 @@
 {
-  "name": "remote-data-ts",
+  "name": "@mewhit/remote-data-ts",
   "version": "0.1.0",
   "main": "index.js",
   "repository": "https://github.com/mewhit/remote-data-ts.git",
   "author": "Mike Whittom <mikewhittom27@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
