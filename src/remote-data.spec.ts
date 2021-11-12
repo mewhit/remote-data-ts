@@ -13,8 +13,9 @@ describe("RemoteData", () => {
     describe("when one is NotAsked", () => it("should return NotAsked", () => expect(map2((x) => +x)(success(10))(notAsked())).toEqual(notAsked())));
     describe("when one is  Failure", () =>
       it("should return Failure", () => expect(map2((x) => +x)(failure(10))(success("10"))).toEqual(failure(10))));
-    describe("when one is Loading", () => it("should return Success", () => expect(map2((x) => +x)(success(10))(loading())).toEqual(loading())));
-    describe("when all are FailState", () => it("should return Success", () => expect(map2((x) => +x)(loading())(notAsked())).toEqual(loading())));
+    describe("when one is Loading", () => it("should return Loading", () => expect(map2((x) => +x)(success(10))(loading())).toEqual(loading())));
+    describe("when all are FailState", () =>
+      it("should return the first remotedata", () => expect(map2((x) => +x)(loading())(notAsked())).toEqual(loading())));
   });
   describe("withDefault", () => {
     describe("when Succeed", () => it("should return Success value", () => expect(withDefault("10")(success("20"))).toEqual("20")));
@@ -34,7 +35,7 @@ describe("RemoteData", () => {
           )(loading())
         ).toBe(0)));
     describe("when isSuccess", () => {
-      it("should return whenLoading", () => {
+      it("should return whenSucceed", () => {
         const expectedValue = "Youpi";
         const remoteData = success("Youpi");
         expect(
@@ -48,7 +49,7 @@ describe("RemoteData", () => {
       });
     });
     describe("when isFailure", () => {
-      it("should return whenLoading", () => {
+      it("should return whenFailure", () => {
         const expectedValue = "fail";
         const remoteData = failure(expectedValue);
         expect(
@@ -62,7 +63,7 @@ describe("RemoteData", () => {
       });
     });
     describe("when isNotAsked", () => {
-      it("should return whenLoading", () => {
+      it("should return whenNotAsked", () => {
         const remoteData = notAsked();
         expect(
           fold(
