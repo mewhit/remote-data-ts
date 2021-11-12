@@ -1,17 +1,12 @@
 {
   "name": "remote-data-ts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "index.js",
   "repository": "https://github.com/mewhit/remote-data-ts.git",
   "author": "Mike Whittom <mikewhittom27@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
