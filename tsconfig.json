@@ -1,21 +1,10 @@
 {
+  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "lib": [],
-    "sourceMap": false,
-    "declaration": true,
-    "strict": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "stripInternal": true
+    "resolveJsonModule": true
   },
-  "include": ["./src"],
-  "exclude": ["./src/**/*.spec.ts"]
+  "include": [
+    "src/**/*.ts",
+    "rollup.config"
+  ]
 }
